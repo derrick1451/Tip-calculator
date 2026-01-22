@@ -111,9 +111,9 @@ class Admin::DashboardControllerTest < ActionDispatch::IntegrationTest
 
     # Check that the data table shows records (newest first by default)
     assert_select ".data-table"
-    # Verify both records appear in the response
-    assert_match(/\$100\.00/, response.body)
-    assert_match(/\$50\.00/, response.body)
+    # Verify both records appear in the response (UGX currency)
+    assert_match(/UGX 100/, response.body)
+    assert_match(/UGX 50/, response.body)
   end
 
   test "dashboard can sort by bill_amount" do
@@ -196,7 +196,7 @@ class Admin::DashboardControllerTest < ActionDispatch::IntegrationTest
 
     # Should show the record (page defaults to 1)
     assert_select ".data-table"
-    assert_match(/\$100\.00/, response.body)
+    assert_match(/UGX 100/, response.body)
   end
 
   # ============================================

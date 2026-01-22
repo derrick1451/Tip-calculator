@@ -280,4 +280,3 @@ class CalculationTest < ActiveSupport::TestCase
     assert_equal 20.0, Calculation.total_tips_collected
   end
 end
-
