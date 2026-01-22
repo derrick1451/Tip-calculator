@@ -49,6 +49,9 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # Pin minitest to a compatible version
+  gem "minitest", "~> 5.25"
 end
 
 group :development do
