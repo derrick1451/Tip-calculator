@@ -1,0 +1,25 @@
+<div class="results-card" data-tip-calculator-target="result">
+  <div class="result-row">
+    <div class="result-label">
+      <span class="result-title">Tip Amount</span>
+      <span class="result-subtitle">/ person</span>
+    </div>
+    <div class="result-value"><%= number_to_currency(calculation.tip_amount / calculation.people_count, unit: 'UGX ', precision: 0) %></div>
+  </div>
+
+  <div class="result-row">
+    <div class="result-label">
+      <span class="result-title">Total</span>
+      <span class="result-subtitle">/ person</span>
+    </div>
+    <div class="result-value"><%= number_to_currency(calculation.per_person_amount, unit: 'UGX ', precision: 0) %></div>
+  </div>
+
+  <div class="results-actions">
+    <button type="button" 
+            class="btn btn-reset"
+            data-action="click->tip-calculator#reset">
+      RESET
+    </button>
+  </div>
+</div>

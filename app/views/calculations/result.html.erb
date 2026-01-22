@@ -1,0 +1,48 @@
+<main class="calculator-container">
+  <header class="calculator-header">
+    <h1> Calculation Saved!</h1>
+    <p class="subtitle">Your tip calculation has been recorded</p>
+  </header>
+
+  <div class="calculator-card result-card-saved">
+    <div class="saved-summary">
+      <div class="summary-row">
+        <span class="summary-label">Bill Amount:</span>
+        <span class="summary-value"><%= number_to_currency(@calculation.bill_amount, unit: 'UGX ', precision: 0) %></span>
+      </div>
+      
+      <div class="summary-row">
+        <span class="summary-label">Tip Percentage:</span>
+        <span class="summary-value"><%= @calculation.tip_percentage %>%</span>
+      </div>
+      
+      <div class="summary-row">
+        <span class="summary-label">Tip Amount:</span>
+        <span class="summary-value"><%= number_to_currency(@calculation.tip_amount, unit: 'UGX ', precision: 0) %></span>
+      </div>
+      
+      <div class="summary-row highlight">
+        <span class="summary-label">Total Bill:</span>
+        <span class="summary-value large"><%= number_to_currency(@calculation.total_amount, unit: 'UGX ', precision: 0) %></span>
+      </div>
+      
+      <% if @calculation.people_count > 1 %>
+        <div class="summary-row split-info">
+          <span class="summary-label">Split between <%= @calculation.people_count %> people:</span>
+          <span class="summary-value accent"><%= number_to_currency(@calculation.per_person_amount, unit: 'UGX ', precision: 0) %> each</span>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="form-actions">
+      <%= link_to "Calculate Another", new_calculation_path, class: "btn btn-primary" %>
+      <%= link_to "View All Calculations", admin_dashboard_path, class: "btn btn-secondary" %>
+    </div>
+  </div>
+
+  <footer class="calculator-footer">
+    <p class="timestamp">
+      Calculated at <%= @calculation.created_at.strftime("%B %d, %Y at %I:%M %p") %>
+    </p>
+  </footer>
+</main>
