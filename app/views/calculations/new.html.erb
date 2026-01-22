@@ -1,0 +1,140 @@
+<main class="calculator-container">
+  <!-- Toast Notification -->
+  <div id="toast-container" class="toast-container" data-tip-calculator-target="toastContainer"></div>
+
+  <header class="calculator-header">
+    <h1>SPLITTER</h1>
+  </header>
+
+  <div class="calculator-card" data-controller="tip-calculator" data-action="turbo:submit-end->tip-calculator#handleSubmitEnd">
+    <%= form_with model: @calculation, local: true, id: "calculation-form", class: "calculator-form" do |form| %>
+      
+      <% if @calculation.errors.any? %>
+        <div class="error-messages">
+          <h3>Please fix the following errors:</h3>
+          <ul>
+            <% @calculation.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="calculator-layout">
+        <!-- Left Column: Inputs -->
+        <div class="calculator-inputs">
+          <!-- Bill Amount -->
+          <div class="form-group">
+            <label for="bill_amount" class="form-label">Bill</label>
+            <div class="input-with-icon">
+              <span class="input-icon">UGX</span>
+              <%= form.number_field :bill_amount,
+                  step: 0.01,
+                  min: 0,
+                  placeholder: "0.00",
+                  class: "form-input bill-input",
+                  data: { 
+                    tip_calculator_target: "billAmount",
+                    action: "input->tip-calculator#calculate"
+                  },
+                  required: true,
+                  autofocus: true %>
+            </div>
+          </div>
+
+          <!-- Tip Percentage -->
+          <div class="form-group">
+            <label class="form-label">Select Tip %</label>
+            
+            <div class="tip-buttons">
+              <% [5, 10, 15, 25, 50].each do |tip| %>
+                <button type="button" 
+                        class="tip-btn <%= 'active' if tip == 15 %>"
+                        data-tip="<%= tip %>"
+                        data-action="click->tip-calculator#selectTip">
+                  <%= tip %>%
+                </button>
+              <% end %>
+              <div class="custom-tip-wrapper">
+                <input type="number" 
+                       id="custom_tip"
+                       step="0.1"
+                       min="0"
+                       max="100"
+                       placeholder="Custom"
+                       class="form-input custom-tip-input"
+                       data-tip-calculator-target="customTip"
+                       data-action="input->tip-calculator#customTipInput">
+              </div>
+            </div>
+
+            <!-- Hidden field for form submission -->
+            <%= form.hidden_field :tip_percentage, 
+                value: 15,
+                data: { tip_calculator_target: "tipPercentage" } %>
+          </div>
+
+          <!-- Number of People -->
+          <div class="form-group">
+            <label for="people_count" class="form-label">Number of People</label>
+            <div class="input-with-icon">
+              <span class="input-icon people-icon">👤</span>
+              <%= form.number_field :people_count,
+                  value: 1,
+                  min: 1,
+                  max: 100,
+                  class: "form-input people-input",
+                  data: { 
+                    tip_calculator_target: "peopleCount",
+                    action: "input->tip-calculator#updatePeople"
+                  },
+                  required: true %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Results -->
+        <div class="calculator-results">
+          <div class="results-card" data-tip-calculator-target="result">
+            <div class="result-row">
+              <div class="result-label">
+                <span class="result-title">Tip Amount</span>
+                <span class="result-subtitle">/ person</span>
+              </div>
+              <div class="result-value" data-tip-calculator-target="tipAmount">$0.00</div>
+            </div>
+
+            <div class="result-row">
+              <div class="result-label">
+                <span class="result-title">Total</span>
+                <span class="result-subtitle">/ person</span>
+              </div>
+              <div class="result-value" data-tip-calculator-target="perPersonAmount">$0.00</div>
+            </div>
+
+            <!-- Hidden total amount for form -->
+            <div class="hidden" data-tip-calculator-target="totalAmount">$0.00</div>
+
+            <div class="results-actions">
+              <button type="button" 
+                      class="btn btn-reset"
+                      data-action="click->tip-calculator#reset">
+                RESET
+              </button>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <%= form.submit "Save Calculation", class: "btn btn-primary" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <footer class="calculator-footer">
+    <p>
+      <a href="<%= admin_dashboard_path %>" class="admin-link">Admin Dashboard →</a>
+    </p>
+  </footer>
+</main>

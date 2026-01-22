@@ -1,0 +1,143 @@
+<main class="admin-container">
+  <header class="admin-header">
+    <h1>Admin Dashboard</h1>
+    <p class="subtitle">Track all tip calculations</p>
+    <div class="admin-header-actions">
+      <%= link_to "← Back to Calculator", root_path, class: "back-link" %>
+      <%= button_to " Logout", admin_logout_path, method: :delete, class: "logout-btn" %>
+    </div>
+  </header>
+
+  <% if flash[:notice] %>
+    <div class="flash-notice"><%= flash[:notice] %></div>
+  <% end %>
+
+  <% if flash[:alert] %>
+    <div class="flash-alert"><%= flash[:alert] %></div>
+  <% end %>
+
+  <!-- Statistics Cards -->
+  <section class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">📝</div>
+      <div class="stat-content">
+        <span class="stat-value"><%= number_with_delimiter(@statistics[:total_calculations]) %></span>
+        <span class="stat-label">Total Calculations</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">💵</div>
+      <div class="stat-content">
+        <span class="stat-value"><%= @statistics[:average_tip_percentage] %>%</span>
+        <span class="stat-label">Average Tip %</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">🧾</div>
+      <div class="stat-content">
+        <span class="stat-value"><%= number_to_currency(@statistics[:average_bill_amount], unit: 'UGX ', precision: 0) %></span>
+        <span class="stat-label">Average Bill</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">💰</div>
+      <div class="stat-content">
+        <span class="stat-value"><%= number_to_currency(@statistics[:total_tips_collected], unit: 'UGX ', precision: 0) %></span>
+        <span class="stat-label">Total Tips</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">👥</div>
+      <div class="stat-content">
+        <span class="stat-value"><%= @statistics[:average_party_size] %></span>
+        <span class="stat-label">Avg Party Size</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sorting Controls -->
+  <section class="sort-controls">
+    <span class="sort-label">Sort by:</span>
+    <div class="sort-buttons">
+      <%= link_to "Date", 
+          admin_dashboard_path(sort: "date", direction: (@sort_column == "date" && @sort_direction == :desc) ? "asc" : "desc"),
+          class: "sort-btn #{@sort_column == 'date' ? 'active' : ''}" %>
+      <%= link_to "Bill Amount", 
+          admin_dashboard_path(sort: "bill_amount", direction: (@sort_column == "bill_amount" && @sort_direction == :desc) ? "asc" : "desc"),
+          class: "sort-btn #{@sort_column == 'bill_amount' ? 'active' : ''}" %>
+      <%= link_to "Tip %", 
+          admin_dashboard_path(sort: "tip_percentage", direction: (@sort_column == "tip_percentage" && @sort_direction == :desc) ? "asc" : "desc"),
+          class: "sort-btn #{@sort_column == 'tip_percentage' ? 'active' : ''}" %>
+    </div>
+    <span class="sort-direction">
+      <%= @sort_direction == :asc ? "↑ Ascending" : "↓ Descending" %>
+    </span>
+  </section>
+
+  <!-- Calculations Table -->
+  <section class="table-container">
+    <% if @calculations.any? %>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Date/Time</th>
+            <th>Bill Amount</th>
+            <th>Tip %</th>
+            <th>Tip Amount</th>
+            <th>Total Bill</th>
+            <th>People</th>
+            <th>Per Person</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @calculations.each do |calculation| %>
+            <tr>
+              <td data-label="Date/Time">
+                <span class="date-primary"><%= calculation.created_at.strftime("%b %d, %Y") %></span>
+                <span class="date-secondary"><%= calculation.created_at.strftime("%I:%M %p") %></span>
+              </td>
+              <td data-label="Bill Amount"><%= number_to_currency(calculation.bill_amount, unit: 'UGX ', precision: 0) %></td>
+              <td data-label="Tip %"><span class="tip-badge"><%= calculation.tip_percentage %>%</span></td>
+              <td data-label="Tip Amount"><%= number_to_currency(calculation.tip_amount, unit: 'UGX ', precision: 0) %></td>
+              <td data-label="Total Bill"><strong><%= number_to_currency(calculation.total_amount, unit: 'UGX ', precision: 0) %></strong></td>
+              <td data-label="People"><%= calculation.people_count %></td>
+              <td data-label="Per Person"><%= number_to_currency(calculation.per_person_amount, unit: 'UGX ', precision: 0) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <div class="empty-state">
+        <div class="empty-icon">📋</div>
+        <h3>No calculations yet</h3>
+        <p>Start using the tip calculator to see data here.</p>
+        <%= link_to "Go to Calculator", root_path, class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </section>
+
+  <!-- Pagination -->
+  <% if @total_pages > 1 %>
+    <nav class="pagination" aria-label="Pagination">
+      <% if @current_page > 1 %>
+        <%= link_to "← Previous", 
+            admin_dashboard_path(page: @current_page - 1, sort: @sort_column, direction: @sort_direction),
+            class: "page-link" %>
+      <% end %>
+
+      <span class="page-info">
+        Page <%= @current_page %> of <%= @total_pages %>
+      </span>
+
+      <% if @current_page < @total_pages %>
+        <%= link_to "Next →", 
+            admin_dashboard_path(page: @current_page + 1, sort: @sort_column, direction: @sort_direction),
+            class: "page-link" %>
+      <% end %>
+    </nav>
+  <% end %>
+</main>
