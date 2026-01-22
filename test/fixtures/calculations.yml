@@ -1,0 +1,42 @@
+# Fixtures for Calculation model tests
+
+standard_tip:
+  bill_amount: 100.00
+  tip_percentage: 15.00
+  tip_amount: 15.00
+  total_amount: 115.00
+  people_count: 1
+  per_person_amount: 115.00
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+split_bill:
+  bill_amount: 200.00
+  tip_percentage: 20.00
+  tip_amount: 40.00
+  total_amount: 240.00
+  people_count: 4
+  per_person_amount: 60.00
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+generous_tip:
+  bill_amount: 50.00
+  tip_percentage: 25.00
+  tip_amount: 12.50
+  total_amount: 62.50
+  people_count: 2
+  per_person_amount: 31.25
+  created_at: <%= 2.days.ago %>
+  updated_at: <%= 2.days.ago %>
+
+no_tip:
+  bill_amount: 75.00
+  tip_percentage: 0.00
+  tip_amount: 0.00
+  total_amount: 75.00
+  people_count: 1
+  per_person_amount: 75.00
+  created_at: <%= 3.days.ago %>
+  updated_at: <%= 3.days.ago %>
+
