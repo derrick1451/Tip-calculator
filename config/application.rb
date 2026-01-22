@@ -21,7 +21,8 @@ module TipCalculator
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     #
-    # config.time_zone = "Central Time (US & Canada)"
+    # Set timezone to East Africa Time (Uganda, Kenya, Tanzania, etc.)
+    config.time_zone = "Nairobi"
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end
