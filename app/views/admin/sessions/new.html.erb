@@ -1,0 +1,58 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <div class="login-icon"></div>
+      <h1>Admin Login</h1>
+      <p>Enter your credentials to access the dashboard</p>
+    </div>
+
+    <% if flash[:alert] %>
+      <div class="login-alert">
+        <span class="alert-icon">⚠️</span>
+        <%= flash[:alert] %>
+      </div>
+    <% end %>
+
+    <%= form_with url: admin_login_path, method: :post, local: true, class: "login-form" do |f| %>
+      <div class="login-field">
+        <label for="username" class="login-label">Username</label>
+        <div class="login-input-wrapper">
+          <span class="login-input-icon">👤</span>
+          <input type="text" 
+                 name="username" 
+                 id="username" 
+                 class="login-input" 
+                 placeholder="Enter username"
+                 autocomplete="username"
+                 autofocus
+                 required>
+        </div>
+      </div>
+
+      <div class="login-field">
+        <label for="password" class="login-label">Password</label>
+        <div class="login-input-wrapper">
+          <span class="login-input-icon">🔑</span>
+          <input type="password" 
+                 name="password" 
+                 id="password" 
+                 class="login-input" 
+                 placeholder="Enter password"
+                 autocomplete="current-password"
+                 required>
+        </div>
+      </div>
+
+      <div class="login-actions">
+        <button type="submit" class="login-btn login-btn-primary">
+          Sign In
+        </button>
+        <%= link_to "Cancel", root_path, class: "login-btn login-btn-secondary" %>
+      </div>
+    <% end %>
+
+    <div class="login-footer">
+      <p>← <a href="<%= root_path %>">Back to Calculator</a></p>
+    </div>
+  </div>
+</div>
