@@ -51,7 +51,7 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 
   # Pin minitest to a compatible version
-  gem "minitest", "~> 5.25"
+  gem "minitest", "~> 6.0"
 end
 
 group :development do
